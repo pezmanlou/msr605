@@ -4,9 +4,6 @@ import libMSR605
 reader = libMSR605.msr605('/dev/ttyUSB0')
 print reader.readIso()
 
-
-
-
 reader.close()
 
 

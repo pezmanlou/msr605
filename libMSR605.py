@@ -7,6 +7,7 @@ import serial
 
 ESC = '\x1B'
 FS = '\x1B'
+ACK = '\x1B\x79'
 
 RESET = '\x1B\x61'
 READ_ISO = '\x1B\x72'
@@ -24,8 +25,23 @@ RAM_TEST = '\x1B\x87'
 
 class msr605:
   def __init__(self, port):
+    # open port
     self.__s = serial.Serial(port, 9600)
+
+    # initialize
     self.__s.write(RESET)
+
+    # how to initialize is backwards in the programming manual
+    self.__s.write(COMMUNICATIONS_TEST)
+
+    if (self.__s.read() != ESC):
+      print "could not init"
+
+    if (self.__s.read() != 'y'):
+      print "could not init"
+
+    self.__s.write(RESET)
+
 
   def readIso(self):
     self.__s.write(RESET)
@@ -85,7 +101,8 @@ class msr605:
     return data
 
 
-
+  def writeIso(self, data):
+    i = 1
 
 
   def close(self):
